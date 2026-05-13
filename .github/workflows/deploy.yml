@@ -6,12 +6,12 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4 # Actualizado a v4
       - name: Docker Login
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3 # Actualizado a v3
         with:
           username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_TOKEN }}
+          [cite_start]password: ${{ secrets.DOCKER_TOKEN }} # [cite: 3]
       - name: Build and Push
         run: |
           docker build -t ${{ secrets.DOCKER_USER }}/innovatech-frontend:latest .
