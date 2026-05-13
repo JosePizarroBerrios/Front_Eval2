@@ -27,15 +27,13 @@ jobs:
           username: ec2-user
           key: ${{ secrets.SSH_KEY }}
           script: |
-            # Crear carpeta si no existe
             mkdir -p ~/app && cd ~/app
 
-            # Crear el archivo docker-compose.yml dinámicamente
+            # Escribimos el archivo usando los secretos directamente para evitar variables vacías
             cat <<EOF > docker-compose.yml
-            version: '3.8'
             services:
               frontend:
-                image: ${DOCKER_USER}/innovatech-frontend:latest
+                image: ${{ secrets.DOCKER_USER }}/innovatech-frontend:latest
                 container_name: frontend
                 ports:
                   - "80:80"
@@ -44,10 +42,6 @@ jobs:
                 restart: always
             EOF
 
-            # Exportar variables para el comando pull
-            export DOCKER_USER=${{ secrets.DOCKER_USER }}
-            
-            # Ejecutar despliegue (usamos sudo para asegurar permisos en Amazon Linux)
+            # Ejecutamos con sudo
             sudo docker-compose pull
             sudo docker-compose up -d --build
-#commit n3 prueba confi
